@@ -9,13 +9,47 @@ from const import *
 app = Flask(__name__)
 app.secret_key = SECRET_FLASK_KEY
 
+
 @app.route('/')
 def index():
     user_id = session.get('user_id', None)
     if user_id is None:
         return redirect(url_for('login'))
-    
-    return session["user_id"]
+    expenses = Expense.getExpenses(user_id)
+    return render_template('expenses.html', expenses=expenses)
+
+
+@app.route('/register_data', methods=['POST', 'GET'])
+def register_data():
+    user_id = session.get('user_id', None)
+    if user_id is None:
+        return redirect(url_for('login'))
+    if request.method != 'POST':
+        return redirect(url_for('index'))
+
+    type_of_register = request.form.get("type_of_register", None)
+    value = request.form.get("value", None)
+    description = request.form.get("description", None)
+
+    if type_of_register is None:
+        return redirect(url_for('index'))
+    if value is None:
+        return redirect(url_for('index'))
+    if description is None:
+        return redirect(url_for('index'))
+
+    Expense()
+
+    return redirect(url_for('index'))
+
+
+@app.route('/seeall')
+def seeall():
+    user_id = session.get('user_id', None)
+    if user_id is None:
+        return redirect(url_for('login'))
+    return redirect(url_for('index'))
+
 
 @app.route('/login', methods=['POST', 'GET'])
 def login():
@@ -33,16 +67,13 @@ def login():
         if val:
             session["user_id"] = id
             return redirect(url_for('index'))
-        
+
         return render_template('login.html', error="Username or Password invalid")
 
     return render_template('login.html')
 
 
-if __name__ == "__main__":    
+if __name__ == "__main__":
     cred = credentials.Certificate(CERTIFICATE)
     firebase_admin.initialize_app(cred)
     app.run(debug=True, host="0.0.0.0", port=5000)
-
-# print(Expense.getExpenses("CbF5i5dkhY7boHKiaCJb"))
-# print(User.validate_user("HectorPulido", "Happ987654321"))
