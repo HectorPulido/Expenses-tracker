@@ -33,11 +33,15 @@
 
 <body class="text-center">
     <form action="/login" method="POST" class="form-signin">
-        {% if error is defined %}
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
         <div class="alert alert-danger" role="alert">
-            {{error}}
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
         </div>
         {% endif %}
+        {% endwith %}
         <h1 class="h3 mb-3 font-weight-normal">Please sign in to track your expenses</h1>
         <label for="inputEmail" class="sr-only">Username</label>
         <input type="text" name="username" id="username" class="form-control" placeholder="Username" required autofocus>

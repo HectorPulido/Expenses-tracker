@@ -10,7 +10,8 @@
     <link rel="canonical" href="https://getbootstrap.com/docs/4.0/examples/offcanvas/">
 
     <!-- Bootstrap core CSS -->
-    <link href="https://getbootstrap.com/docs/4.4/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link href="https://getbootstrap.com/docs/4.4/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
     <!-- Custom styles for this template -->
     <link href="{{url_for('static', filename='expenses.css')}}" rel="stylesheet">
@@ -18,15 +19,28 @@
 
 <body class="bg-light">
     <main role="main" class="container">
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <div class="alert alert-danger" role="alert">
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% endwith %}
         <div class="my-3 p-3 bg-white rounded box-shadow">
-            <h6 class="border-bottom border-gray pb-2 mb-0">Recent updates</h6>
+            <h6 class="border-bottom-gray pb-2 mb-0">Recent updates</h6>
             {% for expense in expenses %}
-            <div class="media text-muted pt-3 border-bottom pb-3">
+            <div class="media text-muted pt-3 border-bottom-gray pb-3 
+                {{'alert-danger' if expense.type_data == '0' else 'alert-success'}}">
                 <div class="col-md-9">
-                    {{expense.concept}} <span class="font-weight-bold">-${{'{:20,.2f}'.format(expense.value)}}</span>
+                    {{expense.description}}
+                    <span class="font-weight-bold">
+                        {{'-' if expense.type_data == '0' else '+'}}${{'{:,.2f}'.format(expense.value)}}
+                    </span>
                 </div>
-                <div class="col-md-3">
-                    {{expense.date_reg}}
+                <div class="col-md-3 text-right">
+                    {{expense.date_string}}
                 </div>
             </div>
             {% endfor %}
@@ -36,13 +50,14 @@
         </div>
 
         <div class="my-3 p-3 bg-white rounded box-shadow">
-            <h6 class="border-bottom border-gray pb-2 mb-2">Add new register</h6>
+            <h6 class="border-bottom-gray pb-2 mb-2">Add new register</h6>
             <form action="/register_data" method="POST">
                 <div class="form-row mb-2">
                     <div class="col">
-                        <select id="type" name="type" class="custom-select mr-sm-2" id="inlineFormCustomSelect">
-                          <option value="0">Expense</option>
-                          <option value="1">Revenue</option>
+                        <select id="type_data" name="type_data" class="custom-select mr-sm-2"
+                            id="inlineFormCustomSelect">
+                            <option value="0">Expense</option>
+                            <option value="1">Revenue</option>
                         </select>
                     </div>
                     <div class="input-group col">
@@ -54,7 +69,8 @@
                 </div>
                 <div class="form-row mb-2">
                     <div class="col">
-                        <input type="text" class="form-control" id="description" name="description" placeholder="Description" required>
+                        <input type="text" class="form-control" id="description" name="description"
+                            placeholder="Description" required>
                     </div>
                 </div>
                 <div class="form-row">
