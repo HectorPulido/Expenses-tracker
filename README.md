@@ -12,16 +12,16 @@ Expenses tracker is a web app designed to track my expenses every day, it uses f
 Right now Expenses tracker has 3 sections
 
 ### Login System
-Every user has an individual tracking, they can not track each others.
+Every user has an individual tracking, they can not track each others. <br>
 ![Login](/images/login.png)
 
 ### Summary
-Here you can register your expenses, and see a little summary of your tracking.
+Here you can register your expenses, and see a little summary of your tracking.<br>
 ![Summary](/images/summary.png)
 
 ### Detail (See all)
 Here you can see all your expenses, watch some stats and download in CSV format all your tracking. 
-Soon you will see filters and ranges.
+Soon you will see filters and ranges.<br>
 ![Detail](/images/complete_register.png)
 
 ## How to install
