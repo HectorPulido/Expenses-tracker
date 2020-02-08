@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="icon" href="/docs/4.0/assets/img/favicons/favicon.ico">
+    <title>Details - ExpensesTracker</title>
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/4.0/examples/offcanvas/">
+
+    <!-- Bootstrap core CSS -->
+    <link href="https://getbootstrap.com/docs/4.4/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <!-- Custom styles for this template -->
+    <link href="{{url_for('static', filename='expenses.css')}}" rel="stylesheet">
+
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+</head>
+
+<body class="bg-light">
+    <main role="main" class="container">
+        {% with messages = get_flashed_messages() %} {% if messages %}
+        <div class="alert alert-danger" role="alert">
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+        </div>
+        {% endif %} {% endwith %}
+        <div class="my-3 p-3 bg-white rounded box-shadow">
+            <h5 class="border-bottom-gray pb-2 mb-0">Registers</h5>
+            {% for expense in expenses %}
+            <div class="media text-muted pt-3 border-bottom-gray pb-3 
+                {{'alert-danger' if expense.type_data == '0' else 'alert-success'}}">
+                <div class="col-md-9">
+                    {{expense.description}}
+                    <span class="font-weight-bold">
+                        {{'-' if expense.type_data == '0' else '+'}}${{'{:,.2f}'.format(expense.value)}}
+                    </span>
+                </div>
+                <div class="col-md-3 text-right">
+                    {{expense.date_string}}
+                </div>
+            </div>
+            {% endfor %}
+            <small class="d-block text-right mt-3">
+                <a href="/">Return</a>
+            </small>
+        </div>
+
+        <div class="my-3 p-3 bg-white rounded box-shadow">
+            <h5 class="border-bottom-gray pb-2 mb-2">Data</h5>
+            <div class="row">
+                <div class="col-md-3"><span class="font-weight-bold">Average</span>: {{'{:,.2f}'.format(average)}}</div>
+                <div class="col-md-3"><span class="font-weight-bold">Total</span>: {{'{:,.2f}'.format(sumOfExpenses)}}</div>
+            </div>
+            <form action="/download_data" method="POST" target="_blank">
+                <div class="row">
+                    <div class="col-md-12 text-right">
+                        <button type="submit" class="btn btn-primary">
+                                <i class="fa fa-file-excel-o white one-dot-five-em" aria-hidden="true"></i>
+                            </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </main>
+</body>
+
+</html>
