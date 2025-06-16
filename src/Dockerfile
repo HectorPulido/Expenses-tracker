@@ -1,16 +1,16 @@
-FROM python:3
+FROM python:3.13-alpine
 
-# set a directory for the app
-WORKDIR /usr/src/app
+WORKDIR /app
 
-# copy all the files to the container
-COPY . .
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+ENV DEBUG=0
 
-# install dependencies
-RUN pip install --no-cache-dir -r ./requirements.txt
+# Instalar dependencias del sistema
+RUN apk add --no-cache gcc postgresql-dev docker
 
-# tell the port number the container should expose
-EXPOSE 5000
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
 
-# run the command
-CMD ["python", "./main.py"]
+RUN adduser -D myuser
+USER myuser

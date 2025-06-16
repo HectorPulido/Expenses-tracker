@@ -1,59 +1,115 @@
-# Expenses tracker
-Expenses tracker is a web app designed to track my expenses every day, it uses firebase as Database and python flask as backend.
+# Expenses Tracker
 
-## TO DO
-* Plots
-* Filters
-* Sign in
-* Comparisons
-* ~~Docker~~
+A simple Django application to track expenses and incomes with interactive visualizations and CSV export.
 
 ## Features
-Right now Expenses tracker has 3 sections
 
-### Login System
-Every user has an individual tracking, they can not track each others.<br>
-![Login](/images/login.png)
+* **User Authentication**: Secure login/logout for individual users.
+* **Dashboard**: View the last 7 days of expenses and incomes in a table and line chart.
+![Dashboard](/images/summary.png)
+* **All Records**: Filter records by date range, view a daily summary chart, and generate a weighted word cloud of transaction descriptions.
+![Dashboard](/images/stats.png)
+* **CSV Export**: Download all records within a chosen date range.
+* **Data Visualization**:
 
-### Summary
-Here you can register your expenses, and see a little summary of your tracking.<br>
-![Summary](/images/summary.png)
+  * Line charts powered by Chart.js for temporal trends.
+  * Word cloud generated with the Python `wordcloud` library to highlight high-value descriptions.
+* **Responsive UI**: Built with Bootstrap 5 and custom CSS.
 
-### Detail (See all)
-Here you can see all your expenses, watch some stats and download in CSV format all your tracking. 
-Soon you will see filters and ranges.<br>
-![Detail](/images/complete_register.png)
+## Tech Stack
 
-## How to install
-1. Install all dependecies using the command ">>pip install -r requirements.txt"
-2. Go to your firebase console, create a new project
-3. Go to configuration, download a json Key
-4. Configure it in your "const.py" file
-5. Run the project using the command ">>python main.py"
+* **Backend**: Python, Django 3.1, Django REST Framework
+* **Database**: PostgreSQL
+* **Frontend**: Bootstrap 5, Chart.js
+* **Visualization**: `wordcloud` Python library
+* **Internationalization**: `django-babel`
 
-### If you want to run it with docker...
-1. Do everything above 
-2. Go to "src" folder
-3. Build the Image using the command ">> docker build -t yourusername/expensestracker ."
-4. Run the Docker using the command ">>docker run -d -p 8888:5000 yourusername/expensestracker"
+## Installation
+
+1. **Clone the repository**:
+
+   ```bash
+   git clone https://github.com/tu-usuario/expenses-tracker.git
+   cd expenses-tracker/src
+   ```
+
+2. **Create and activate a virtual environment**:
+
+   ```bash
+   python3 -m venv venv
+   source venv/bin/activate
+   ```
+
+3. **Install dependencies**:
+
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+4. **Create a `.env` file** in the project root with the following variables:
+
+   ```ini
+   SECRET_KEY=your-secret-key
+   POSTGRES_DB=your_db_name
+   POSTGRES_USER=your_db_user
+   POSTGRES_PASSWORD=your_db_password
+   POSTGRES_HOST=localhost
+   POSTGRES_PORT=5432
+   ```
+
+5. **Apply migrations**:
+
+   ```bash
+   python manage.py migrate
+   ```
+
+6. **Collect static files**:
+
+   ```bash
+   python manage.py collectstatic
+   ```
+
+7. **Run the development server**:
+
+   ```bash
+   python manage.py runserver
+   ```
+
+8. **Access the application** at `http://127.0.0.1:8000/`.
+
+## Configuration
+
+* Edit `settings.py` or your `.env` file to adjust database settings, `DEBUG` mode, and allowed hosts.
+* Charts and word clouds can be customized in:
+
+  * `tracking/views.py` for data aggregation logic.
+  * Templates under `tracking/templates/expenses/` for chart options and styling.
+
+## Usage
+
+1. **Register or log in** at `/login/`.
+2. **Dashboard** (`/`) to add new entries and view the last 7 days.
+3. **All Records** (`/see_all/`) to filter by date, view statistics, charts, and the word cloud.
+4. **Export CSV** via the download button on the All Records page.
+
+## Running Tests
+
+```bash
+python manage.py test
+```
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/YourFeature`)
+3. Commit your changes (`git commit -m "Add new feature"`)
+4. Push to the branch (`git push origin feature/YourFeature`)
+5. Open a Pull Request
 
 ## License
-This project is under MIT License, use it as you want.
 
-## More interesting projects
-I have a lot of fun projects, check this:
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
-### Blockchain
-- https://github.com/HectorPulido/Amazon-QLDB-Login-Example
-- https://github.com/HectorPulido/Decentralized-Twitter-with-blockchain-as-base
+---
 
-### Machine learning
-- https://github.com/HectorPulido/Machine-learning-Framework-Csharp
-- https://github.com/HectorPulido/Evolutionary-Neural-Networks-on-unity-for-bots
-- https://github.com/HectorPulido/Imitation-learning-in-unity
-- https://github.com/HectorPulido/Chatbot-seq2seq-C-
-
-### You also can follow me in social networks
-- Twitter: https://twitter.com/Hector_Pulido_
-- Youtube: http://youtube.com/c/hectorandrespulidopalmar
-- Twitch: https://www.twitch.tv/hector_pulido_
+*Developed with ❤️ by tu-usuario*

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="auto">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Expenses Tracker{% endblock %}</title>
+  {% load static %}
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Custom expenses CSS -->
+  <link href="{% static 'expenses/css/expenses.css' %}" rel="stylesheet">
+  <!-- Icons -->
+  <script src="https://getbootstrap.com/docs/5.3/assets/js/color-modes.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+</head>
+
+<body>
+  <!-- Theme toggle control -->
+  <div class="dropdown position-fixed bottom-0 end-0 mb-3 me-3 bd-mode-toggle">
+    <button class="btn btn-bd-primary py-2 dropdown-toggle d-flex align-items-center" id="bd-theme" type="button"
+      data-bs-toggle="dropdown" aria-expanded="false">
+      <i class="bi bi-circle-half"></i>
+      <span class="visually-hidden">Toggle theme</span>
+    </button>
+    <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="bd-theme">
+      <li><button class="dropdown-item d-flex align-items-center" data-bs-theme-value="light"><i
+            class="bi bi-sun me-2"></i>Light</button></li>
+      <li><button class="dropdown-item d-flex align-items-center" data-bs-theme-value="dark"><i
+            class="bi bi-moon-stars me-2"></i>Dark</button></li>
+      <li><button class="dropdown-item d-flex align-items-center active" data-bs-theme-value="auto"><i
+            class="bi bi-circle-half me-2"></i>Auto</button></li>
+    </ul>
+  </div>
+
+  <!-- Header -->
+  <header data-bs-theme="dark">
+    <div class="collapse text-bg-dark" id="navbarHeader">
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-8 col-md-7 py-4">
+            <h4>About</h4>
+            <p class="text-body-secondary">This is a simple Django application to track expenses and incomes with
+              interactive visualizations and CSV export to help you regain control of your finance.</p>
+            <div class="ml-auto">
+              {% if user.is_authenticated %}
+              <a class="btn btn-outline-secondary" href="{% url 'logout' %}">Logout</a>
+              {% endif %}
+            </div>
+          </div>
+          <div class="col-sm-4 offset-md-1 py-4">
+            <h4>Contact</h4>
+            <ul class="list-unstyled">
+              <li><a href="https://github.com/HectorPulido/Expenses-tracker" class="text-white">Fork this project</a></li>
+              <li><a href="http://www.youtube.com/@Hector.Pulido" class="text-white">Follow me on youtube</a></li>
+              <li><a href="mailto:hectorandrespp@gmail.com" class="text-white">Email me</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="navbar navbar-dark bg-dark shadow-sm">
+      <div class="container">
+        <a class="navbar-brand" href="{% url 'index' %}" class="navbar-brand d-flex align-items-center">
+          ExpensesTracker
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarHeader"
+          aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation"> <span
+            class="navbar-toggler-icon"></span> </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="container-fluid">
+    <div class="row">
+      {% if user.is_authenticated %}
+      <!-- Sidebar -->
+      <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-body-tertiary sidebar collapse">
+        <div class="position-sticky pt-3">
+          <ul class="nav flex-column">
+            <li class="nav-item">
+              <a class="nav-link active d-flex align-items-center" aria-current="page" href="{% url 'index' %}">
+                <i class="bi bi-house-fill me-2"></i>
+                Dashboard
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link d-flex align-items-center" href="{% url 'see_all' %}">
+                <i class="bi bi-list-ul me-2"></i>
+                All Records
+              </a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+      {% endif %}
+
+      <!-- Main content -->
+      <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4">
+        {% block content %}{% endblock %}
+      </main>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS Bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

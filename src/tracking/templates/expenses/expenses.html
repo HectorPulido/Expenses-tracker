@@ -1,0 +1,119 @@
+{% extends 'expenses/base.html' %}
+{% load babel %}
+{% block title %}Dashboard - ExpensesTracker{% endblock %}
+{% block content %}
+<h1 class="h2">Recent Updates</h1>
+<div class="card mb-4 p-3">
+  <div class="chart-container">
+    <canvas id="rangeChart" height="80"></canvas>
+  </div>
+</div>
+<div class="table-responsive card">
+  <table class="table table-striped table-hover align-middle">
+    <thead>
+      <tr>
+        <th>Description</th>
+        <th class="text-end">Amount</th>
+        <th class="text-end">Date (d-m-Y)</th>
+        <th class="text-end">Delete</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for expense in expenses %}
+      <tr class="{% if expense.type_data == '0' %}table-danger{% else %}table-success{% endif %}">
+        <td>{{ expense.description }}</td>
+        <td class="text-end">
+          {% if expense.type_data == '0' %}-{% else %}+{% endif %}
+          {{ expense.value|currencyfmt:"USD" }}
+        </td>
+        <td class="text-end">{{ expense.issue_date|date:"d-m-Y" }}</td>
+        <td class="text-end">
+          <form method="post" action="{% url 'delete_expense' expense.id %}" style="display: inline;">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-link p-0" title="Delete"
+              onclick="return confirm('Are you sure you want to delete this entry?');">
+              🗑️
+            </button>
+          </form>
+        </td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="3" class="text-center">No recent expenses.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<h2 class="h3 mt-5">Add New Entry</h2>
+<div class="card mb-4">
+  <div class="card-body">
+    <form method="post" class="row g-3">
+      {% csrf_token %}
+      {{ form.non_field_errors }}
+      <div class="row mt-3">
+        <div class="col-md-7">
+          <label for="description" class="form-label">Description * </label>
+          <input type="text" class="form-control" id="description" name="description" placeholder="Description"
+            required>
+        </div>
+        <div class="col-md-5">
+          <label for="type_data" class="form-label">Type *</label>
+          <select id="type_data" name="type_data" class="form-select" id="inlineFormCustomSelect">
+            <option value="0">Expense</option>
+            <option value="1">Revenue</option>
+          </select>
+        </div>
+      </div>
+      <div class="row mt-3">
+        <div class="col-md-5">
+          <label for="value" class="form-label">Amount *</label>
+          <div class="input-group">
+            <span class="input-group-text">$</span>
+            <input type="number" class="form-control" id="value" name="value" placeholder="Value" required>
+          </div>
+        </div>
+        <div class="col-md-5">
+          <label for="issue_date" class="form-label">Date</label>
+          <input type="date" id="issue_date" name="issue_date" class="form-control">
+        </div>
+        <div class="col-md-2 d-flex align-items-end">
+          <button type="submit" class="btn btn-primary w-100">Submit</button>
+        </div>
+      </div>
+
+
+    </form>
+  </div>
+</div>
+
+<script>
+  document.getElementById('issue_date').valueAsDate = new Date();
+</script>
+
+
+<script>
+  const labelsAll = JSON.parse('{{ labels_json|escapejs }}');
+  const expAll = JSON.parse('{{ expenses_json|escapejs }}');
+  const incAll = JSON.parse('{{ incomes_json|escapejs }}');
+  const ctxAll = document.getElementById('rangeChart').getContext('2d');
+  new Chart(ctxAll, {
+    type: 'line',
+    data: {
+      labels: labelsAll,
+      datasets: [
+        { label: 'Expenses', data: expAll, fill: false, borderColor: 'red', tension: 0.1 },
+        { label: 'Incomes', data: incAll, fill: false, borderColor: 'green', tension: 0.1 },
+      ]
+    },
+    options: {
+      maintainAspectRatio: false,
+      scales: {
+        x: { title: { display: true, text: 'Date (YYYY-MM-DD)' } },
+        y: { title: { display: true, text: 'Amount' } },
+      }
+    }
+  });
+</script>
+{% endblock %}

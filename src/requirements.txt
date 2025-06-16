@@ -1,3 +1,10 @@
-requests
-firebase-admin
-flask
+django>=4.2
+djangorestframework
+psycopg2-binary
+gunicorn==23.0.0
+channels
+redis
+python-dotenv
+django-extensions
+django-babel
+wordcloud
