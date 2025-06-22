@@ -11,7 +11,8 @@ then
 fi
 $@
 
-python manage.py runserver 0.0.0.0:8000
+# For testing
+# python manage.py runserver 0.0.0.0:8000
 
-#gunicorn expenses_tracker.wsgi:application --bind 0.0.0.0:8000  --timeout 240 --workers 3 --log-level=debug
+gunicorn expenses_tracker.wsgi:application --bind 0.0.0.0:8000  --timeout 240 --workers 3 --log-level=debug
 

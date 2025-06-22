@@ -17,8 +17,6 @@ services:
     container_name: web
     build: .
     command: ./entrypoint.sh
-    volumes:
-      - .:/app
     ports:
       - "8001:8000"
     platform: linux/amd64
