@@ -30,8 +30,9 @@ SECRET_KEY = os.environ.get("SECRET_KEY", "thisisnotasecretkey")
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    'coolify.local:8001',
-    'expenses.hectorpulido.net'
+    'coolify.local',
+    'expenses.hectorpulido.net',
+    os.environ.get("ALLOWED_HOST", "allowed_host")
 ]
 
 
