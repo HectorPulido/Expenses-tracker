@@ -30,11 +30,11 @@ SECRET_KEY = os.environ.get("SECRET_KEY", "thisisnotasecretkey")
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    'coolify.local',
-    'expenses.hectorpulido.net',
-    os.environ.get("ALLOWED_HOST", "allowed_host")
+    "coolify.local",
+    os.environ.get("ALLOWED_HOST", "allowed_host"),
 ]
 
+CSRF_TRUSTED_ORIGINS = ["https://" + os.environ.get("ALLOWED_HOST", "allowed_host")]
 
 # Application definition
 
