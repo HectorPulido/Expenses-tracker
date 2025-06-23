@@ -150,23 +150,26 @@ def see_all(request):
     incomes_data = [e["total_incomes"] or 0 for e in daily_qs]
 
     # 4) Build frequency dict for word cloud
-    freq_dict = {}
-    for e in expenses:
-        desc = e.description.strip()
-        freq_dict[desc] = freq_dict.get(desc, 0) + float(e.value)
 
-    # Generate the word cloud image
-    wc = WordCloud(
-        width=800,
-        height=400,
-        background_color="white",
-        max_words=100,
-    ).generate_from_frequencies(freq_dict)
+    img_str = ""
+    if len(expenses) > 0:
+        freq_dict = {}
+        for e in expenses:
+            desc = e.description.strip()
+            freq_dict[desc] = freq_dict.get(desc, 0) + float(e.value)
 
-    # Convert image to base64
-    buffer = BytesIO()
-    wc.to_image().save(buffer, format="PNG")
-    img_str = base64.b64encode(buffer.getvalue()).decode("utf-8")
+        # Generate the word cloud image
+        wc = WordCloud(
+            width=800,
+            height=400,
+            background_color="white",
+            max_words=100,
+        ).generate_from_frequencies(freq_dict)
+
+        # Convert image to base64
+        buffer = BytesIO()
+        wc.to_image().save(buffer, format="PNG")
+        img_str = base64.b64encode(buffer.getvalue()).decode("utf-8")
 
     context = {
         "expenses": expenses,
