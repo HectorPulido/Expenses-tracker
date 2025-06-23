@@ -110,7 +110,7 @@ def see_all(request):
         start_date = (
             agg["min_date"].date()
             if agg["min_date"]
-            else datetime.timezone.now().date()
+            else timezone.now().date()
         )
         end_date = agg["max_date"].date() if agg["max_date"] else timezone.now().date()
 
