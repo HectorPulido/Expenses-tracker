@@ -112,4 +112,19 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 ---
 
-*Developed with ❤️ by tu-usuario*
+<div align="center">
+<h3 align="center">Let's connect 😋</h3>
+</div>
+<p align="center">
+<a href="https://www.linkedin.com/in/hector-pulido-17547369/" target="blank">
+<img align="center" width="30px" alt="Hector's LinkedIn" src="https://github.com/HectorPulido/HectorPulido/blob/master/img/linkedin-icon.svg?raw=true"/></a> &nbsp; &nbsp;
+<a href="https://twitter.com/Hector_Pulido_" target="blank">
+<img align="center" width="30px" alt="Hector's Twitter" src="https://github.com/HectorPulido/HectorPulido/blob/master/img/twitter-official.svg?raw=true"/></a> &nbsp; &nbsp;
+<a href="https://www.twitch.tv/hector_pulido_" target="blank">
+<img align="center" width="30px" alt="Hector's Twitch" src="https://github.com/HectorPulido/HectorPulido/blob/master/img/twitch-icon.svg?raw=true"/></a> &nbsp; &nbsp;
+<a href="https://www.youtube.com/channel/UCS_iMeH0P0nsIDPvBaJckOw" target="blank">
+<img align="center" width="30px" alt="Hector's Youtube" src="https://github.com/HectorPulido/HectorPulido/blob/master/img/youtube-icon.svg?raw=true"/></a> &nbsp; &nbsp;
+<a href="https://pequesoft.net/" target="blank">
+<img align="center" width="30px" alt="Pequesoft website" src="https://github.com/HectorPulido/HectorPulido/blob/master/img/pequesoft-favicon.png?raw=true"/></a> &nbsp; &nbsp;
+
+</p>
