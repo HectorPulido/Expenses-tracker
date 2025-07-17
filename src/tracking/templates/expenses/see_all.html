@@ -22,14 +22,8 @@
     <canvas id="rangeChart" height="80"></canvas>
   </div>
 </div>
-<h3 class="h4 mt-4">Word Cloud (by amount)</h3>
-<div class="card mb-4 p-3 text-center">
-  {% if wordcloud_img %}
-  <img src="data:image/png;base64,{{ wordcloud_img }}" alt="Word Cloud">
-  {% else %}
-  <p>No data to generate word cloud.</p>
-  {% endif %}
-</div>
+
+<h3 class="h4 mt-4">All records</h3>
 <div class="table-responsive card">
   <table class="table table-striped table-hover align-middle">
     <thead>
@@ -37,6 +31,9 @@
         <th>Description</th>
         <th class="text-end">Amount</th>
         <th class="text-end">Date</th>
+        <th class="text-end">Periodicity</th>
+        <th class="text-end">Categories</th>
+        <th class="text-end">Delete</th>
       </tr>
     </thead>
     <tbody>
@@ -48,6 +45,14 @@
           {{ expense.value|currencyfmt:"USD" }}
         </td>
         <td class="text-end">{{ expense.issue_date|date:"d-m-Y" }}</td>
+        <td class="text-end"> {% if expense.periodicity == 'O' %}One time{% else %}Recurrent{% endif %}
+        <td class="text-end">
+          {% for cat in expense.categories.all %}
+          {{ cat.name }}{% if not forloop.last %}, {% endif %}
+          {% empty %}
+          —
+          {% endfor %}
+        </td>
         <td class="text-end">
           <form method="post" action="{% url 'delete_expense' expense.id %}" style="display: inline;">
             {% csrf_token %}
@@ -60,19 +65,58 @@
       </tr>
       {% empty %}
       <tr>
-        <td colspan="3" class="text-center">No records found.</td>
+        <td colspan="4" class="text-center">No records found.</td>
       </tr>
       {% endfor %}
     </tbody>
   </table>
 </div>
+
+
+<h3 class="h4 mt-4">Word Cloud (by amount)</h3>
+<div class="card mb-4 p-3 text-center">
+  {% if wordcloud_img %}
+  <img src="data:image/png;base64,{{ wordcloud_img }}" alt="Word Cloud">
+  {% else %}
+  <p>No data to generate word cloud.</p>
+  {% endif %}
+</div>
+
+<h3 class="h4 mt-4">Expenses per category</h3>
+<div class="table-responsive card">
+  <table class="table table-striped table-hover align-middle">
+    <thead>
+      <tr>
+        <th>Category</th>
+        <th class="text-end">Total expenses</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for stat in category_stats %}
+      <tr>
+        <td>{{ stat.categories__name }}</td>
+        <td class="text-end">
+          {{ stat.total|currencyfmt:"USD" }}
+        </td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="2" class="text-center">No category data.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<h3 class="h4 mt-4">Statistics</h3>
 <div class="row mt-4">
   <div class="col-md-6">
     <div class="card">
       <div class="card-body">
-        <h5 class="card-title">Statistics</h5>
-        <p>Total: <strong>{{ total|floatformat:2 }}</strong></p>
-        <p>Average: <strong>{{ average|floatformat:2 }}</strong></p>
+        <p>Total Expenses: <strong>{{ total_expenses }}</strong></p>
+        <p>Total Income: <strong>{{ total_income }}</strong></p>
+        <p>Total: <strong>{{ total }}</strong></p>
+        <p>Average: <strong>{{ average }}</strong></p>
       </div>
     </div>
   </div>

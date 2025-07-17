@@ -15,6 +15,8 @@
         <th>Description</th>
         <th class="text-end">Amount</th>
         <th class="text-end">Date (d-m-Y)</th>
+        <th class="text-end">Periodicity</th>
+        <th class="text-end">Categories</th>
         <th class="text-end">Delete</th>
       </tr>
     </thead>
@@ -27,6 +29,14 @@
           {{ expense.value|currencyfmt:"USD" }}
         </td>
         <td class="text-end">{{ expense.issue_date|date:"d-m-Y" }}</td>
+        <td class="text-end"> {% if expense.periodicity == 'O' %}One time{% else %}Recurrent{% endif %}
+        <td class="text-end">
+          {% for cat in expense.categories.all %}
+          {{ cat.name }}{% if not forloop.last %}, {% endif %}
+          {% empty %}
+          —
+          {% endfor %}
+        </td>
         <td class="text-end">
           <form method="post" action="{% url 'delete_expense' expense.id %}" style="display: inline;">
             {% csrf_token %}
@@ -39,7 +49,7 @@
       </tr>
       {% empty %}
       <tr>
-        <td colspan="3" class="text-center">No recent expenses.</td>
+        <td colspan="4" class="text-center">No recent expenses.</td>
       </tr>
       {% endfor %}
     </tbody>
@@ -52,38 +62,45 @@
     <form method="post" class="row g-3">
       {% csrf_token %}
       {{ form.non_field_errors }}
-      <div class="row mt-3">
-        <div class="col-md-7">
-          <label for="description" class="form-label">Description * </label>
-          <input type="text" class="form-control" id="description" name="description" placeholder="Description"
-            required>
-        </div>
-        <div class="col-md-5">
-          <label for="type_data" class="form-label">Type *</label>
-          <select id="type_data" name="type_data" class="form-select" id="inlineFormCustomSelect">
-            <option value="0">Expense</option>
-            <option value="1">Revenue</option>
-          </select>
-        </div>
-      </div>
-      <div class="row mt-3">
-        <div class="col-md-5">
-          <label for="value" class="form-label">Amount *</label>
-          <div class="input-group">
-            <span class="input-group-text">$</span>
-            <input type="number" class="form-control" id="value" name="value" placeholder="Value" required>
-          </div>
-        </div>
-        <div class="col-md-5">
-          <label for="issue_date" class="form-label">Date</label>
-          <input type="date" id="issue_date" name="issue_date" class="form-control">
-        </div>
-        <div class="col-md-2 d-flex align-items-end">
-          <button type="submit" class="btn btn-primary w-100">Submit</button>
-        </div>
+
+      <div class="col-md-12">
+        {{ form.categories.label_tag }}
+        {{ form.categories }}
+        {{ form.categories.errors }}
       </div>
 
+      <div class="col-md-6">
+        {{ form.description.label_tag }}
+        {{ form.description }}
+        {{ form.description.errors }}
+      </div>
+      <div class="col-md-3">
+        {{ form.type_data.label_tag }}
+        {{ form.type_data }}
+        {{ form.type_data.errors }}
+      </div>
+      <div class="col-md-3">
+        {{ form.periodicity.label_tag }}
+        {{ form.periodicity }}
+        {{ form.periodicity.errors }}
+      </div>
 
+      <div class="col-md-5">
+        {{ form.value.label_tag }}
+        <div class="input-group">
+          <span class="input-group-text">$</span>
+          {{ form.value }}
+        </div>
+        {{ form.value.errors }}
+      </div>
+      <div class="col-md-5">
+        {{ form.issue_date.label_tag }}
+        {{ form.issue_date }}
+        {{ form.issue_date.errors }}
+      </div>
+      <div class="col-md-2 d-flex align-items-end">
+        <button type="submit" class="btn btn-primary w-100">Submit</button>
+      </div>
     </form>
   </div>
 </div>

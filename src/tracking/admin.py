@@ -1,7 +1,12 @@
 from django.contrib import admin
-from .models import Expense
+from .models import Expense, Category
 
 
-# Register your models here.
 @admin.register(Expense)
-class ExpenseAdmin(admin.ModelAdmin): ...
+class ExpenseAdmin(admin.ModelAdmin):
+    ...
+
+
+@admin.register(Category)
+class CategoryAdmin(admin.ModelAdmin):
+    ...
