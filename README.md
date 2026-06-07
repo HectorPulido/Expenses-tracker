@@ -94,7 +94,13 @@ All variables are configured in the `environment:` block of each service in
 | `POSTGRES_HOST`        | `web`       | `db`          | **Keep as `db`** — it's the name of the database service in Compose. |
 | `POSTGRES_PORT`        | `db` + `web`| `5432`        | PostgreSQL port (internal to the Compose network). |
 | `ports` (`web`)        | `web`       | `8001:8000`   | Host port mapping. Change the left side (`8001`) if that port is already in use. |
-| `platform`             | `web`       | `linux/amd64` | Forces the amd64 image. On Apple Silicon / ARM you can remove this line to avoid slow emulation. |
+
+> **Architecture (ARM / x86):** the image is built from `python:3.13-slim` and all
+> dependencies ship prebuilt wheels, so it builds natively on both Apple Silicon
+> (arm64) and x86 servers — no `platform:` pin and no emulation needed. If you
+> specifically need to build an amd64 image (e.g. to deploy to an x86 host from an
+> ARM machine), add `platform: linux/amd64` to the `web` service or use
+> `docker buildx --platform linux/amd64`.
 
 ### About the `Invalid HTTP_HOST header` error
 

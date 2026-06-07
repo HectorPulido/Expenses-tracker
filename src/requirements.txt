@@ -1,10 +1,7 @@
-django>=4.2
+Django>=4.2,<6.0
 djangorestframework
 psycopg2-binary
 gunicorn==23.0.0
-channels
-redis
 python-dotenv
 django-extensions
-django-babel
 wordcloud
