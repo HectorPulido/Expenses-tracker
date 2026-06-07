@@ -27,14 +27,38 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get("SECRET_KEY", "thisisnotasecretkey")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get("DEBUG", "False").lower() in ("true", "1", "yes")
 
+# Hosts/domain names this site can serve.
+# Set ALLOWED_HOSTS as a comma-separated list (e.g. "example.com,www.example.com").
+# Use "*" to allow any host (handy for quick local/Docker testing, not for production).
+# The defaults already cover local development and Docker Compose.
 ALLOWED_HOSTS = [
-    "coolify.local",
-    os.environ.get("ALLOWED_HOST", "allowed_host"),
+    host.strip()
+    for host in os.environ.get(
+        "ALLOWED_HOSTS", "localhost,127.0.0.1,0.0.0.0,coolify.local"
+    ).split(",")
+    if host.strip()
 ]
 
-CSRF_TRUSTED_ORIGINS = ["https://" + os.environ.get("ALLOWED_HOST", "allowed_host")]
+# Backwards-compatible: allow a single extra host via the old ALLOWED_HOST var.
+_extra_host = os.environ.get("ALLOWED_HOST")
+if _extra_host and _extra_host not in ALLOWED_HOSTS:
+    ALLOWED_HOSTS.append(_extra_host)
+
+# Origins trusted for CSRF (must include the scheme, e.g. "https://example.com").
+# Set CSRF_TRUSTED_ORIGINS as a comma-separated list. Defaults cover the local
+# Docker Compose port mapping (host port 8001).
+CSRF_TRUSTED_ORIGINS = [
+    origin.strip()
+    for origin in os.environ.get(
+        "CSRF_TRUSTED_ORIGINS",
+        "http://localhost:8001,http://127.0.0.1:8001",
+    ).split(",")
+    if origin.strip()
+]
+if _extra_host:
+    CSRF_TRUSTED_ORIGINS.append("https://" + _extra_host)
 
 # Application definition
 

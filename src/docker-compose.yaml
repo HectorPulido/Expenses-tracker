@@ -21,8 +21,10 @@ services:
       - "8001:8000"
     platform: linux/amd64
     environment:
-      DEBUG: True
+      DEBUG: "True"
       SECRET_KEY: "your-django-secret-key"
+      # Comma-separated list of hosts allowed to serve the app. Use "*" to allow any host.
+      ALLOWED_HOSTS: "localhost,127.0.0.1,0.0.0.0"
       POSTGRES_DB: "expensesdb"
       POSTGRES_USER: "expensesuser"
       POSTGRES_PASSWORD: "changeme"

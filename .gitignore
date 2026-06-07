@@ -1,2 +1,5 @@
 ignore*
 out.txt
+
+# macOS
+.DS_Store
